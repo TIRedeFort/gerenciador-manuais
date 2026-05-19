@@ -1,0 +1,3 @@
+contar: Error: Acesso negado: Sem permissão para visualizar manuais da loja 33
+    at getTableName (C:\Aplicações\Manual de Documentações 1.09\backend\controllers\manualController.js:34:27)
+    at async exports.contar (C:\Aplicações\Manual de Documentações 1.09\backend\controllers\manualController.js:179:29)

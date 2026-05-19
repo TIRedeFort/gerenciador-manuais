@@ -1,0 +1,585 @@
+.ranking-page {
+    padding: 3rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.page-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 400;
+}
+
+.ranking-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.rank-card {
+    background: var(--background-secondary);
+    border: 1px solid transparent;
+    border-radius: 16px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.rank-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.03) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.rank-card:hover {
+    transform: translateX(8px) scale(1.01);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
+}
+
+.rank-card:hover::before {
+    opacity: 1;
+}
+
+.rank-card.gold {
+    border-color: rgba(255, 215, 0, 0.3);
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(255, 215, 0, 0.05) 100%);
+}
+
+.rank-card.silver {
+    border-color: rgba(192, 192, 192, 0.3);
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(192, 192, 192, 0.05) 100%);
+}
+
+.rank-card.bronze {
+    border-color: rgba(205, 127, 50, 0.3);
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(205, 127, 50, 0.05) 100%);
+}
+
+.rank-position {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.rank-medal-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rank-icon {
+    width: 3rem;
+    height: 3rem;
+    filter: drop-shadow(0 2px 8px currentColor);
+}
+
+.rank-medal-wrapper.gold .rank-icon {
+    color: #FFD700;
+}
+
+.rank-medal-wrapper.silver .rank-icon {
+    color: #C0C0C0;
+}
+
+.rank-medal-wrapper.bronze .rank-icon {
+    color: #CD7F32;
+}
+
+.rank-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    opacity: 0.5;
+}
+
+.rank-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.user-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color) 0%, rgba(var(--primary-color-rgb, 46, 125, 50), 0.8) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.user-details h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+}
+
+.user-perfil {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    background: rgba(var(--primary-color-rgb, 46, 125, 50), 0.1);
+    color: var(--primary-color);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rank-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 140px;
+    padding: 1rem;
+    background: rgba(var(--primary-color-rgb, 46, 125, 50), 0.05);
+    border-radius: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat svg {
+    color: var(--primary-color);
+    opacity: 0.7;
+}
+
+.stat-value {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- Modal Refined --- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: var(--space-4);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-2xl);
+    width: 100%;
+    max-width: 800px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    animation: modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalSlideUp {
+    from {
+        transform: translateY(40px) scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    background: linear-gradient(to right, var(--bg-secondary), var(--bg-card));
+    padding: var(--space-6) var(--space-8);
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-user-profile {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+}
+
+.modal-user-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 8px 16px rgba(232, 93, 4, 0.2);
+}
+
+.modal-user-text h2 {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.modal-user-badges {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: 4px;
+}
+
+.profile-badge {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--accent-color);
+    background: rgba(232, 93, 4, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.count-badge {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.modal-close-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    background: var(--danger-color);
+    color: white;
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: var(--space-6) var(--space-8);
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* --- Content Tree --- */
+.user-content-tree {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.tree-section {
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.tree-section:hover {
+    border-color: rgba(232, 93, 4, 0.2);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.tree-header {
+    padding: var(--space-4) var(--space-5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.header-main {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color);
+}
+
+.tree-header .title {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.header-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.header-meta .badge {
+    font-size: 12px;
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 8px;
+    border-radius: 6px;
+    color: var(--text-muted);
+}
+
+.header-meta .chevron {
+    transition: transform 0.3s ease;
+    color: var(--text-muted);
+}
+
+.header-meta .chevron.rotated {
+    transform: rotate(180deg);
+}
+
+.tree-content {
+    background: rgba(0, 0, 0, 0.15);
+    padding: var(--space-5);
+    border-top: 1px solid var(--glass-border);
+}
+
+.app-sub-section {
+    margin-bottom: var(--space-6);
+}
+
+.app-sub-section:last-child {
+    margin-bottom: 0;
+}
+
+.app-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: var(--space-3);
+}
+
+.app-label .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-color);
+}
+
+.manual-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-3);
+}
+
+.mini-manual-card {
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.mini-manual-card:hover {
+    transform: translateX(4px);
+    border-color: var(--accent-color);
+    background: rgba(232, 93, 4, 0.05);
+}
+
+.mini-manual-card .card-icon {
+    color: var(--accent-color);
+    opacity: 0.7;
+}
+
+.mini-manual-card .card-info {
+    flex: 1;
+}
+
+.mini-manual-card h6 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.mini-manual-card p {
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.mini-manual-card .arrow {
+    color: var(--text-muted);
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.mini-manual-card:hover .arrow {
+    opacity: 1;
+    transform: translateX(2px);
+    color: var(--accent-color);
+}
+
+.empty-state-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-12);
+    text-align: center;
+    color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+    .ranking-page {
+        padding: var(--space-4) var(--space-4);
+    }
+
+    .page-header h1 {
+        font-size: var(--font-size-2xl);
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .modal-content {
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    .modal-header {
+        padding: var(--space-4) var(--space-5);
+    }
+
+    .modal-user-avatar {
+        width: 44px;
+        height: 44px;
+    }
+
+    .modal-user-text h2 {
+        font-size: var(--font-size-lg);
+    }
+
+    .modal-body {
+        padding: var(--space-4);
+    }
+
+    .manual-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rank-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-4);
+        padding: var(--space-5);
+    }
+
+    .rank-position {
+        justify-content: flex-start;
+        min-width: 0;
+    }
+
+    .rank-stats {
+        width: 100%;
+        min-width: 0;
+        align-items: flex-start;
+    }
+}
