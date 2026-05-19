@@ -4,6 +4,9 @@ const api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL || '/api'
 });
 
+const appBasePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+const withBasePath = (path) => `${appBasePath}${path}`;
+
 // Interceptor para adicionar token JWT
 api.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
@@ -22,7 +25,7 @@ api.interceptors.response.use(
             if (!window.location.pathname.includes('/login')) {
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
-                window.location.href = '/login';
+                window.location.href = withBasePath('/login');
             }
         }
         return Promise.reject(error);

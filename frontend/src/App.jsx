@@ -60,11 +60,13 @@ function RequireAuth({ children }) {
 }
 
 function App() {
+  const basename = import.meta.env.BASE_URL.replace(/\/$/, '');
+
   return (
     <ThemeProvider>
       <AuthProvider>
         <LojaProvider>
-          <Router>
+          <Router basename={basename}>
             <Routes>
               {/* Login - única rota pública */}
               <Route path="/login" element={<Login />} />
@@ -192,4 +194,3 @@ function App() {
 }
 
 export default App;
-
