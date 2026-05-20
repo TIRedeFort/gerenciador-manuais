@@ -7,6 +7,21 @@ import { useLoja } from '../context/LojaContext';
 import RichTextEditor from './RichTextEditor';
 import { Save, X, FileText, Upload, FileType, Paperclip } from 'lucide-react';
 
+const removeTemporaryBlobImages = (html) => {
+    if (!html) return '';
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    doc.querySelectorAll('img').forEach((img) => {
+        const src = img.getAttribute('src') || '';
+        if (src.startsWith('blob:')) {
+            img.remove();
+        }
+    });
+
+    return doc.body.innerHTML;
+};
+
 export default function EditManualModal({ manualId, initialAplicacaoId, initialModuloId, onClose, onSave }) {
     const { numero } = useParams();
     const isEditing = !!manualId;
@@ -137,9 +152,10 @@ export default function EditManualModal({ manualId, initialAplicacaoId, initialM
             }
 
             if (formData.tipo_conteudo === 'HTML') {
+                const cleanHtml = removeTemporaryBlobImages(formData.conteudo_html);
                 // Validação de conteúdo vazio
                 const parser = new DOMParser();
-                const doc = parser.parseFromString(formData.conteudo_html, 'text/html');
+                const doc = parser.parseFromString(cleanHtml, 'text/html');
                 const textContent = doc.body.textContent || "";
                 const hasImages = doc.querySelector('img');
 
@@ -150,7 +166,7 @@ export default function EditManualModal({ manualId, initialAplicacaoId, initialM
                 }
 
                 // Verificar tamanho do conteúdo (limite de 50MB para garantir)
-                const contentSize = new Blob([formData.conteudo_html]).size;
+                const contentSize = new Blob([cleanHtml]).size;
                 const maxSize = 50 * 1024 * 1024; // 50MB
 
                 if (contentSize > maxSize) {
@@ -159,7 +175,7 @@ export default function EditManualModal({ manualId, initialAplicacaoId, initialM
                     return;
                 }
 
-                formDataToSend.append('conteudo_html', formData.conteudo_html);
+                formDataToSend.append('conteudo_html', cleanHtml);
             } else if (formData.tipo_conteudo === 'PDF') {
                 // Validação de arquivo obrigatório na criação
                 if (!formData.arquivo_pdf && !isEditing) {

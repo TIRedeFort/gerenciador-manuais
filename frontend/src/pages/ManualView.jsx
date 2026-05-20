@@ -66,9 +66,28 @@ function ManualView() {
 
     const normalizeUploadUrlsInHtml = (html) => {
         if (!html) return '';
-        return html
-            .replace(/(src|href)=["']\/uploads\//g, '$1="/manuais/uploads/')
-            .replace(/(src|href)=["']uploads\//g, '$1="/manuais/uploads/');
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        doc.querySelectorAll('img').forEach((img) => {
+            const src = img.getAttribute('src') || '';
+
+            if (src.startsWith('blob:')) {
+                img.remove();
+                return;
+            }
+
+            img.setAttribute('src', resolveUploadUrl(src));
+        });
+
+        doc.querySelectorAll('a').forEach((link) => {
+            const href = link.getAttribute('href') || '';
+            if (href.startsWith('/uploads/') || href.startsWith('uploads/')) {
+                link.setAttribute('href', resolveUploadUrl(href));
+            }
+        });
+
+        return doc.body.innerHTML;
     };
 
     const handleCopyContent = async () => {

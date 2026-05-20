@@ -19,6 +19,21 @@ import { manualService } from '../services/api';
 
 import { useCallback } from 'react';
 
+const sanitizeEditorHtml = (html) => {
+    if (!html) return '';
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    doc.querySelectorAll('img').forEach((img) => {
+        const src = img.getAttribute('src') || '';
+        if (src.startsWith('blob:')) {
+            img.remove();
+        }
+    });
+
+    return doc.body.innerHTML;
+};
+
 function RichTextEditor({ content, onChange }) {
     const editor = useEditor({
         extensions: [
@@ -32,8 +47,37 @@ function RichTextEditor({ content, onChange }) {
             })
         ],
         content: content || '',
+        editorProps: {
+            handlePaste: (view, event) => {
+                const items = Array.from(event.clipboardData?.items || []);
+                const imageFiles = items
+                    .filter((item) => item.type.startsWith('image/'))
+                    .map((item) => item.getAsFile())
+                    .filter(Boolean);
+
+                if (imageFiles.length === 0) {
+                    return false;
+                }
+
+                event.preventDefault();
+                imageFiles.forEach((file) => uploadAndInsertImage(file));
+                return true;
+            },
+            handleDrop: (view, event) => {
+                const files = Array.from(event.dataTransfer?.files || [])
+                    .filter((file) => file.type.startsWith('image/'));
+
+                if (files.length === 0) {
+                    return false;
+                }
+
+                event.preventDefault();
+                files.forEach((file) => uploadAndInsertImage(file));
+                return true;
+            }
+        },
         onUpdate: ({ editor }) => {
-            onChange(editor.getHTML());
+            onChange(sanitizeEditorHtml(editor.getHTML()));
         }
     });
 
@@ -75,28 +119,12 @@ function RichTextEditor({ content, onChange }) {
         input.click();
     }, [uploadAndInsertImage]);
 
-    // Handle paste for images
-    const handlePaste = useCallback((event) => {
-        const items = event.clipboardData?.items;
-        if (!items) return;
-
-        for (const item of items) {
-            if (item.type.startsWith('image/')) {
-                event.preventDefault();
-                const file = item.getAsFile();
-                if (file) {
-                    uploadAndInsertImage(file);
-                }
-            }
-        }
-    }, [uploadAndInsertImage]);
-
     if (!editor) {
         return null;
     }
 
     return (
-        <div className="tiptap-editor" onPaste={handlePaste}>
+        <div className="tiptap-editor">
             <div className="editor-toolbar">
                 <button
                     type="button"
