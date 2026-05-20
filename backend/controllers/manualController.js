@@ -1,5 +1,6 @@
 const db = require('../config/database');
 const oracledb = require('oracledb');
+const { getDatabaseUploadPath } = require('../config/uploadPaths');
 
 // Helper to get table name
 const getTableName = async (base, req) => {
@@ -279,8 +280,7 @@ exports.buscarPorId = async (req, res) => {
 exports.criar = async (req, res) => {
     try {
         const { id_aplicacao, titulo, descricao_card, conteudo_html, tipo_conteudo, loja } = req.body;
-        // Normalizar path para URL (windows backslashes)
-        const arquivo_pdf = req.file ? req.file.path.replace(/\\/g, '/') : null;
+        const arquivo_pdf = req.file ? getDatabaseUploadPath('pdfs', req.file.filename) : null;
 
         // Determinar tabela baseada na loja enviada no body
         // Simulando req para getTableName (espera req.body.loja ou req.query.loja)
@@ -327,7 +327,7 @@ exports.atualizar = async (req, res) => {
     try {
         const { id } = req.params;
         const { id_aplicacao, titulo, descricao_card, conteudo_html, tipo_conteudo } = req.body;
-        const arquivo_pdf = req.file ? req.file.path.replace(/\\/g, '/') : null;
+        const arquivo_pdf = req.file ? getDatabaseUploadPath('pdfs', req.file.filename) : null;
         const tableManual = await getTableName('TIRF_MANUAIS', req);
 
         // Se upload novo, atualiza path e tipo. Se não, mantem o que tem ou atualiza tipo se mudou explicitamente

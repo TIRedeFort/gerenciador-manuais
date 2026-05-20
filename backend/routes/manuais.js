@@ -7,11 +7,12 @@ const { authorizeTI, authorizeAuthor } = require('../middleware/authorize');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { getUploadDir, getPublicUploadUrl } = require('../config/uploadPaths');
 
 // Configuração do Multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadDir = 'uploads/pdfs';
+        const uploadDir = getUploadDir('pdfs');
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
         }
@@ -31,7 +32,7 @@ const upload = multer({
 // Configuração do Multer para Imagens
 const storageImages = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadDir = 'uploads/images';
+        const uploadDir = getUploadDir('images');
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
         }
@@ -70,8 +71,8 @@ router.post('/upload-imagem', auth, uploadImages.single('imagem'), (req, res) =>
         if (!req.file) {
             return res.status(400).json({ error: 'Nenhuma imagem enviada' });
         }
-        // Retorna a URL completa ou relativa da imagem
-        const imageUrl = `/uploads/images/${req.file.filename}`;
+        // Retorna a URL publica no mesmo prefixo usado pelo EasyPanel (/manuais)
+        const imageUrl = getPublicUploadUrl('images', req.file.filename);
         res.json({ url: imageUrl });
     } catch (error) {
         console.error('Erro no upload de imagem:', error);

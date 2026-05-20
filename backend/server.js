@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./config/database');
 const path = require('path');
+const { uploadsRoot } = require('./config/uploadPaths');
 
 // Importar rotas
 console.log('Importing auth routes...');
@@ -35,14 +36,14 @@ app.use('/api/aplicacoes', aplicacoesRoutes);
 app.use('/api/manuais', manuaisRoutes);
 app.use('/api/ranking', rankingRoutes);
 app.use('/api/lojas', lojasRoutes);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(uploadsRoot));
 app.use('/manuais/api/auth', authRoutes);
 app.use('/manuais/api/modulos', modulosRoutes);
 app.use('/manuais/api/aplicacoes', aplicacoesRoutes);
 app.use('/manuais/api/manuais', manuaisRoutes);
 app.use('/manuais/api/ranking', rankingRoutes);
 app.use('/manuais/api/lojas', lojasRoutes);
-app.use('/manuais/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/manuais/uploads', express.static(uploadsRoot));
 
 // Rota de health check
 app.get('/api/health', (req, res) => {

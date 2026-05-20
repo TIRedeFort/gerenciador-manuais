@@ -15,6 +15,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=1601
+ENV UPLOADS_DIR=/app/backend/uploads
+ENV PUBLIC_UPLOADS_PATH=/manuais/uploads
 ENV ORACLE_CLIENT_PATH=/opt/oracle/instantclient
 ENV LD_LIBRARY_PATH=/opt/oracle/instantclient
 

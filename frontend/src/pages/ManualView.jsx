@@ -54,6 +54,23 @@ function ManualView() {
         });
     };
 
+    const resolveUploadUrl = (filePath) => {
+        if (!filePath) return '';
+        if (/^(https?:|blob:|data:)/i.test(filePath)) return filePath;
+        if (filePath.startsWith('/manuais/uploads/')) return filePath;
+        if (filePath.startsWith('/uploads/')) return `/manuais${filePath}`;
+        if (filePath.startsWith('manuais/uploads/')) return `/${filePath}`;
+        if (filePath.startsWith('uploads/')) return `/manuais/${filePath}`;
+        return filePath.startsWith('/') ? filePath : `/${filePath}`;
+    };
+
+    const normalizeUploadUrlsInHtml = (html) => {
+        if (!html) return '';
+        return html
+            .replace(/(src|href)=["']\/uploads\//g, '$1="/manuais/uploads/')
+            .replace(/(src|href)=["']uploads\//g, '$1="/manuais/uploads/');
+    };
+
     const handleCopyContent = async () => {
         if (!contentRef.current || manual?.TIPO_CONTEUDO === 'PDF') return;
 
@@ -241,6 +258,7 @@ function ManualView() {
                     {manual.TIPO_CONTEUDO === 'PDF' && manual.ARQUIVO_PDF ? (
                         <div className="manual-content file-container">
                             {(() => {
+                                const fileUrl = resolveUploadUrl(manual.ARQUIVO_PDF);
                                 const ext = manual.ARQUIVO_PDF.split('.').pop().toLowerCase();
                                 const isPdf = ext === 'pdf';
                                 const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext);
@@ -248,7 +266,7 @@ function ManualView() {
                                 if (isPdf) {
                                     return (
                                         <iframe
-                                            src={`/${manual.ARQUIVO_PDF}`} // Proxy path
+                                            src={fileUrl}
                                             title={manual.TITULO}
                                             width="100%"
                                             height="800px"
@@ -259,7 +277,7 @@ function ManualView() {
                                     return (
                                         <div className="flex justify-center">
                                             <img
-                                                src={`/${manual.ARQUIVO_PDF}`}
+                                                src={fileUrl}
                                                 alt={manual.TITULO}
                                                 style={{ maxWidth: '100%', maxHeight: '800px', borderRadius: '8px' }}
                                             />
@@ -275,7 +293,7 @@ function ManualView() {
                                                 <h3>Arquivo disponível para download</h3>
                                                 <p>{manual.ARQUIVO_PDF.split('/').pop()}</p>
                                                 <a
-                                                    href={`/${manual.ARQUIVO_PDF}`}
+                                                    href={fileUrl}
                                                     download
                                                     className="btn btn-primary"
                                                     target="_blank"
@@ -304,7 +322,7 @@ function ManualView() {
                             <div
                                 ref={contentRef}
                                 className="manual-content-body"
-                                dangerouslySetInnerHTML={{ __html: manual.CONTEUDO_HTML }}
+                                dangerouslySetInnerHTML={{ __html: normalizeUploadUrlsInHtml(manual.CONTEUDO_HTML) }}
                             />
                         </div>
                     )}
