@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { LojaProvider } from './context/LojaContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -38,6 +38,7 @@ function AppLayout({ children }) {
 // Componente que verifica se está logado
 function RequireAuth({ children }) {
   const { isAuthenticated, loading, primeiroLogin } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -52,7 +53,7 @@ function RequireAuth({ children }) {
   }
 
   // Redirecionar para alteração de senha no primeiro login
-  if (primeiroLogin && window.location.pathname !== '/alterar-senha') {
+  if (primeiroLogin && location.pathname !== '/alterar-senha') {
     return <Navigate to="/alterar-senha" replace />;
   }
 
