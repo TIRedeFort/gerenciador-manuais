@@ -306,20 +306,10 @@ exports.atualizarUsuario = async (req, res) => {
     }
 };
 
-// Excluir usuário (apenas Administrador TI principal)
+// Excluir usuário (qualquer administrador TI)
 exports.excluirUsuario = async (req, res) => {
     try {
         const { id } = req.params;
-
-        // Verificar se quem está excluindo é o Administrador TI principal
-        const currentUser = await db.execute(
-            'SELECT LOGIN FROM TIRF_USUARIOS WHERE ID_USUARIO = :id',
-            [req.userId]
-        );
-
-        if (currentUser.rows.length === 0 || currentUser.rows[0].LOGIN !== 'ti.cd@rfcentral.com.br') {
-            return res.status(403).json({ error: 'Apenas o Administrador TI pode excluir usuários' });
-        }
 
         // Não permitir excluir o próprio usuário
         if (parseInt(id) === req.userId) {
