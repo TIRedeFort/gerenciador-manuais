@@ -64,6 +64,24 @@ function ManualView() {
         return filePath.startsWith('/') ? filePath : `/${filePath}`;
     };
 
+    const resolvePdfUrl = (filePath) => {
+        if (!filePath) return '';
+
+        const normalizedPath = String(filePath).trim().replace(/\\/g, '/');
+        const pathWithoutQuery = normalizedPath.split(/[?#]/, 1)[0];
+        const filename = pathWithoutQuery.split('/').pop();
+        if (!filename) return '';
+
+        let decodedFilename = filename;
+        try {
+            decodedFilename = decodeURIComponent(filename);
+        } catch {
+            decodedFilename = filename;
+        }
+
+        return `/manuais/uploads/pdfs/${encodeURIComponent(decodedFilename)}`;
+    };
+
     const normalizeUploadUrlsInHtml = (html) => {
         if (!html) return '';
         const parser = new DOMParser();
@@ -277,8 +295,8 @@ function ManualView() {
                     {manual.TIPO_CONTEUDO === 'PDF' && manual.ARQUIVO_PDF ? (
                         <div className="manual-content file-container">
                             {(() => {
-                                const fileUrl = resolveUploadUrl(manual.ARQUIVO_PDF);
-                                const ext = manual.ARQUIVO_PDF.split('.').pop().toLowerCase();
+                                const fileUrl = resolvePdfUrl(manual.ARQUIVO_PDF);
+                                const ext = fileUrl.split('/').pop().split('.').pop().toLowerCase();
                                 const isPdf = ext === 'pdf';
                                 const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext);
 
