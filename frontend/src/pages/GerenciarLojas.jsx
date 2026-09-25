@@ -331,7 +331,7 @@ function GerenciarLojas() {
                     </div>
 
                     {showForm && (
-                        <div className="modal-overlay" onClick={resetForm}>
+                        <div className="modal-overlay">
                             <div className="modal-content" onClick={e => e.stopPropagation()}>
                                 <div className="modal-header">
                                     <h3>{editingId ? 'Editar Loja' : 'Nova Loja'}</h3>
@@ -445,7 +445,7 @@ function GerenciarLojas() {
                     </div>
 
                     {showUserForm && (
-                        <div className="modal-overlay" onClick={resetUserForm}>
+                        <div className="modal-overlay">
                             <div className="modal-content" onClick={e => e.stopPropagation()}>
                                 <div className="modal-header-admin">
                                     <h3>{editingUserId ? 'Editar Usuário' : 'Novo Usuário de Loja'}</h3>

@@ -219,15 +219,8 @@ export default function EditManualModal({ manualId, initialAplicacaoId, initialM
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
-    // Fechar ao clicar fora ou ESC
-    const handleOverlayClick = (e) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
-    };
-
     return createPortal(
-        <div className="modal-overlay animate-fadeIn" onClick={handleOverlayClick}>
+        <div className="modal-overlay animate-fadeIn">
             <div className="modal-content">
                 <div className="modal-header">
                     <h2 className="heading-3 flex items-center gap-2">

@@ -130,7 +130,7 @@ function GerenciarModulos() {
 
                 {/* Form Modal */}
                 {showForm && (
-                    <div className="modal-overlay animate-fadeIn" onClick={(e) => e.target === e.currentTarget && resetForm()}>
+                    <div className="modal-overlay animate-fadeIn">
                         <div className="modal-content admin-form-card">
                             <form onSubmit={handleSubmit} className="admin-form">
                                 <h3>{editingId ? 'Editar Módulo' : 'Novo Módulo'}</h3>

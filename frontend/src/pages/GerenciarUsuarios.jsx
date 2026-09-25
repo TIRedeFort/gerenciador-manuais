@@ -151,7 +151,7 @@ function GerenciarUsuarios() {
 
             {/* Form Modal */}
             {showForm && (
-                <div className="modal-overlay animate-fadeIn" onClick={(e) => e.target === e.currentTarget && resetForm()}>
+                <div className="modal-overlay animate-fadeIn">
                     <div className="modal-content">
                         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
                             <div className="modal-header-admin">

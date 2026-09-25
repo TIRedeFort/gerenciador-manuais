@@ -153,7 +153,7 @@ function RankingPage() {
 
             {/* Modal de Manuais do Usuário */}
             {selectedUser && (
-                <div className="modal-overlay" onClick={closeModal}>
+                <div className="modal-overlay">
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
                             <div className="modal-header-content">
