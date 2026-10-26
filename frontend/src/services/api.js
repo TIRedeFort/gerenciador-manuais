@@ -1,26 +1,23 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || '/api'
+    baseURL: import.meta.env.VITE_API_BASE_URL || '/manuais/api',
+    withCredentials: true
 });
 
 const appBasePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 const withBasePath = (path) => `${appBasePath}${path}`;
 
 // Interceptor para adicionar token JWT
-api.interceptors.request.use(config => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-});
 
 // Interceptor para tratar erros
 api.interceptors.response.use(
     response => response,
     error => {
-        if (error.response?.status === 401) {
+        if (error.response?.data?.mustChangePassword && !window.location.pathname.endsWith('/alterar-senha')) {
+            window.location.href = withBasePath('/alterar-senha');
+        }
+        if (error.response?.status === 401 && !error.config?.url?.endsWith('/auth/me')) {
             // Não redirecionar se já está na página de login
             if (!window.location.pathname.includes('/login')) {
                 localStorage.removeItem('token');
@@ -36,7 +33,9 @@ api.interceptors.response.use(
 export const authService = {
     login: (login, senha) => api.post('/auth/login', { login, senha }),
     register: (data) => api.post('/auth/register', data),
-    getProfile: () => api.get('/auth/profile')
+    getProfile: () => api.get('/auth/profile'),
+    me: () => api.get('/auth/me'),
+    logout: () => api.post('/auth/logout')
 };
 
 // Módulos

@@ -1,8 +1,11 @@
 const jwt = require('jsonwebtoken');
 
 const auth = (req, res, next) => {
+    const portal = require('../services/portalAuth');
+    if (portal.enabled()) return require('./portalSession')(req, res, next);
     try {
-        const authHeader = req.headers.authorization;
+        const cookie = portal.readCookie(req);
+        const authHeader = cookie ? `Bearer ${cookie}` : req.headers.authorization;
 
         if (!authHeader) {
             return res.status(401).json({ error: 'Token não fornecido' });

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const manualController = require('../controllers/manualController');
 const auth = require('../middleware/auth');
+const { checkStores } = require('../middleware/portalSession');
 
 const { authorizeTI, authorizeAuthor } = require('../middleware/authorize');
 const multer = require('multer');
@@ -82,8 +83,8 @@ router.post('/upload-imagem', auth, uploadImages.single('imagem'), (req, res) =>
 
 // Rotas protegidas (qualquer usuário autenticado pode criar/editar)
 router.post('/:id/duplicar-treinamentos', auth, manualController.duplicarParaTreinamentos);
-router.post('/', auth, upload.single('arquivo_pdf'), manualController.criar);
-router.put('/:id', auth, upload.single('arquivo_pdf'), authorizeAuthor, manualController.atualizar);
+router.post('/', auth, upload.single('arquivo_pdf'), checkStores, manualController.criar);
+router.put('/:id', auth, upload.single('arquivo_pdf'), checkStores, authorizeAuthor, manualController.atualizar);
 
 // Exclusão de manuais (apenas TI)
 router.delete('/:id', auth, authorizeTI, manualController.excluir);

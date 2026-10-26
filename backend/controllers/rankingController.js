@@ -4,7 +4,7 @@ const db = require('../config/database');
 const getTableName = (base, req) => {
     const loja = req.query.loja || req.body.loja;
     // Loja 33 usa as tabelas genéricas
-    if (loja && (loja === '33' || parseInt(loja) === 33)) {
+    if (loja && (loja === '33' || parseInt(loja) === 33 || (req.portalSession && String(loja) === '01'))) {
         return base;
     }
     if (loja && /^\d{2}$/.test(loja)) {

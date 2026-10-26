@@ -8,6 +8,8 @@ export default defineConfig({
   server: {
     port: 1600,
     proxy: {
+      '/manuais/api': { target: 'http://localhost:1601', changeOrigin: true },
+      '/manuais/uploads': { target: 'http://localhost:1601', changeOrigin: true },
       '/api': {
         target: 'http://localhost:1601',
         changeOrigin: true

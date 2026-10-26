@@ -79,10 +79,9 @@ exports.login = async (req, res) => {
             nomeLoja: lojasPermitidas.length > 0 ? lojasPermitidas[0].nomeLoja : null
         }
 
-        res.json({
-            token,
-            user: userData
-        });
+        const portal = require('../services/portalAuth');
+        res.cookie(portal.COOKIE, token, portal.cookieOptions());
+        res.json({ user: userData });
     } catch (error) {
         console.error('Erro no login:', error);
         res.status(500).json({ error: 'Erro interno do servidor' });

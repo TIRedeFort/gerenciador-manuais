@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const optionalAuth = (req, res, next) => {
+    if (require('../services/portalAuth').enabled()) return require('./portalSession')(req, res, next);
     try {
         const authHeader = req.headers.authorization;
 

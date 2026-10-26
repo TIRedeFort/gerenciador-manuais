@@ -28,6 +28,14 @@ const frontendDistPath = path.resolve(__dirname, '../frontend-dist');
 app.use(cors());
 app.use(express.json({ limit: '300mb' })); // Limite aumentado para 300MB
 app.use(express.urlencoded({ extended: true, limit: '300mb' }));
+const portal = require('./services/portalAuth');
+const portalSession = require('./middleware/portalSession');
+app.use(portal.checkOrigin);
+app.use((req, res, next) => {
+    if (/^\/(manuais\/)?api\/auth(\/|$)/.test(req.path) || /^\/(manuais\/)?api\/health$/.test(req.path)) return next();
+    if (/^\/(manuais\/)?(api|uploads)(\/|$)/.test(req.path)) return portalSession(req, res, next);
+    next();
+});
 
 // Rotas
 app.use('/api/auth', authRoutes);
@@ -55,6 +63,7 @@ app.get('/manuais/api/health', (req, res) => {
 });
 
 app.get('/api/migrate-fix-pdf', async (req, res) => {
+    if (portal.enabled()) return res.sendStatus(404);
     try {
         await db.execute(`ALTER TABLE TIRF_MANUAIS ADD ARQUIVO_PDF VARCHAR2(255)`);
     } catch (e) { console.log('Erro col 1', e.message); }

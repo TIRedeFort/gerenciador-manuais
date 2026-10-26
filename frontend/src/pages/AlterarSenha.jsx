@@ -6,7 +6,7 @@ import api from '../services/api';
 
 function AlterarSenha() {
     const navigate = useNavigate();
-    const { user, logout, updateUser } = useAuth();
+    const { updateUser } = useAuth();
     const [novaSenha, setNovaSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -17,8 +17,8 @@ function AlterarSenha() {
         e.preventDefault();
         setError('');
 
-        if (novaSenha.length < 6) {
-            setError('A senha deve ter pelo menos 6 caracteres');
+        if (novaSenha.length < 8) {
+            setError('A senha deve ter pelo menos 8 caracteres');
             return;
         }
 
@@ -30,10 +30,11 @@ function AlterarSenha() {
         setLoading(true);
         try {
             await api.put('/auth/alterar-senha', { novaSenha });
+            const response = await api.get('/auth/me');
 
             // Atualizar usuário para não mostrar mais a tela de primeiro login
             if (updateUser) {
-                updateUser({ ...user, primeiroLogin: false });
+                updateUser(response.data.user);
             }
 
             navigate('/');

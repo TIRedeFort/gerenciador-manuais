@@ -383,6 +383,11 @@ exports.duplicarParaTreinamentos = async (req, res) => {
         const { id } = req.params;
         const { lojas } = req.body; // Array de códigos de lojas, ex: ['01', '02', '33']
 
+        if (req.portalSession && req.userPerfil !== 'TI' && (!Array.isArray(lojas)
+            || lojas.some(store => !req.allowedStores.includes(String(store).padStart(2, '0'))))) {
+            return res.status(403).json({ error: 'Loja não autorizada' });
+        }
+
         if (!lojas || !Array.isArray(lojas) || lojas.length === 0) {
             return res.status(400).json({ error: 'É necessário informar ao menos uma loja' });
         }

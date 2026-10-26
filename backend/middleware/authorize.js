@@ -32,7 +32,7 @@ const authorizeAuthor = async (req, res, next) => {
         const loja = req.query.loja || req.body.loja;
         let tableName = 'TIRF_MANUAIS'; // Default
 
-        if (loja && /^\d{2}$/.test(loja)) {
+        if (loja && /^\d{2}$/.test(loja) && !(req.portalSession && ['01', '33'].includes(loja))) {
             tableName = `TIRF_MANUAIS_LOJA${loja}`;
         }
 

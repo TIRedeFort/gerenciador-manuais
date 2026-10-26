@@ -28,3 +28,7 @@ NODE_ENV=production
 ```
 
 Os arquivos em `backend/uploads` fazem parte do conteudo atual dos manuais e estao incluidos no repositorio.
+
+## Login Portal
+
+Contrato, configuração, SELECT de migração e validação local: [PORTAL_AUTH.md](PORTAL_AUTH.md).

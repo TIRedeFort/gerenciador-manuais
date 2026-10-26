@@ -23,9 +23,8 @@ function Login() {
 
         if (result.success) {
             // Verificar se o usuário logado retornou userData com número da loja
-            const storedUser = localStorage.getItem('user');
-            if (storedUser) {
-                const userData = JSON.parse(storedUser);
+            const userData = result.user;
+            if (userData) {
                 if (userData.perfil === 'LOJA' && userData.numeroLoja) {
                     // Redirecionar para a página da loja
                     navigate(`/loja/${userData.numeroLoja}`);
