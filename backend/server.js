@@ -21,6 +21,9 @@ const lojasRoutes = require('./routes/lojas');
 console.log('Imports done.');
 
 const app = express();
+app.use(require('./integrations/express-audit.cjs').createAuditMiddleware({ applicationId: 'manuais',
+    actor: req => ({ id: req.userId, login: req.portalSession?.user?.login || req.userNome, nome: req.userNome, portalUserId: req.portalSession?.user?.portalUserId }),
+    modules: [['/api/manuais', 'manuais'], ['/manuais/api/manuais', 'manuais'], ['/api/modulos', 'modulos'], ['/manuais/api/modulos', 'modulos'], ['/', 'administracao']] }));
 const PORT = process.env.PORT || 3001;
 const frontendDistPath = path.resolve(__dirname, '../frontend-dist');
 

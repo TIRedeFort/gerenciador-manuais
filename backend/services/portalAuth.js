@@ -118,7 +118,7 @@ function createService(db, fetcher = (...args) => fetch(...args)) {
         }
         const native = result.rows[0];
         if (!native || native.STATUS !== 'ATIVO') throw failure(403, 'Perfil nativo indisponível; vincule a conta na migração');
-        return { user: { id: native.ID_USUARIO, nome: native.NOME, login: native.LOGIN, perfil: profile.role,
+        return { user: { id: native.ID_USUARIO, portalUserId: portalUser.id, nome: native.NOME, login: native.LOGIN, perfil: profile.role,
             primeiroLogin: false, lojasPermitidas: allowed, ...allowed[0] }, stores: profile.stores, temporary: false };
     }
     return { request, load };
