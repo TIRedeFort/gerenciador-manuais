@@ -27,7 +27,7 @@ PORT=1601
 NODE_ENV=production
 ```
 
-Os arquivos em `backend/uploads` fazem parte do conteudo atual dos manuais e estao incluidos no repositorio.
+Os arquivos historicos em `backend/uploads` incluidos no repositorio nao substituem o armazenamento de producao. Configure um bind mount persistente para `/app/backend/uploads` antes de implantar. Nunca dependa da camada gravavel do container para guardar uploads. Procedimentos, backup e verificacao: [ops/STORAGE.md](ops/STORAGE.md).
 
 ## Login Portal
 

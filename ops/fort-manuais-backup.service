@@ -1,0 +1,14 @@
+[Unit]
+Description=Backup verificado dos arquivos do Fort Manuais
+StartLimitIntervalSec=600
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/sbin/fort-manuais-backup.py
+User=root
+UMask=0077
+Nice=10
+IOSchedulingClass=idle
+Restart=on-failure
+RestartSec=60
